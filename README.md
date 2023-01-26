@@ -1,3 +1,3 @@
 # startup
 
-This is for CS260!
+This repository is for my CS260 class.
