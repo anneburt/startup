@@ -10,3 +10,13 @@ Below are some rough sketches of the application:
 
 ![website1](https://user-images.githubusercontent.com/71862670/215231975-ffbc6fd2-e6cc-45a9-9cb9-f61cef3bdebf.jpg)
 ![website2](https://user-images.githubusercontent.com/71862670/215231980-74bafe7b-d892-43b2-8991-a2150a774fb9.jpg)
+
+# Web Server
+
+The website will be hosted at http://18.118.227.233
+
+# SSH into server
+
+```
+ssh -i [key pair file] ubuntu@[ip address]
+```
