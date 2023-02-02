@@ -13,7 +13,7 @@ Below are some rough sketches of the application:
 
 # Web Server
 
-The website will be hosted at http://18.118.227.233
+The website will be hosted http://blocks260.click
 
 # SSH into server
 
