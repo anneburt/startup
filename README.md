@@ -20,3 +20,7 @@ The website will be hosted http://blocks260.click
 ```
 ssh -i [key pair file] ubuntu@[ip address]
 ```
+
+# Simon
+
+To get some practice with HTML, I created my own version of Simon HTML found at https://simon.blocks260.click. I used many different elements to outline a basic structure and format for the Simon game including multiple pages with navigation to each, input, buttons, lists, drawing, and more. Later in the course, I will add on to this structure to add style and make it interactive.
