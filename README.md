@@ -23,4 +23,8 @@ ssh -i [key pair file] ubuntu@[ip address]
 
 # Simon
 
-To get some practice with HTML, I created my own version of Simon HTML found at https://simon.blocks260.click. I used many different elements to outline a basic structure and format for the Simon game including multiple pages with navigation to each, input, buttons, lists, drawing, and more. Later in the course, I will add on to this structure to add style and make it interactive.
+To gain experience using HTML and CSS, I created my own version of the simple memory game called Simon. My implementation can be found at https://simon.blocks260.click.
+
+With HTML, I used many different elements to outline a basic structure and format for the Simon game including multiple pages with navigation to each, input, buttons, lists, drawing, and more.
+
+With CSS and the Bootstrap CSS framework, I was able to make the structure of my website much more visually appealing and added intuitive user interface elements. Later in the course, I will make this game functional with the use of JavaScript.
