@@ -19,6 +19,7 @@ main {
 }
 
 .game {
+    /* background: white; */
     width: 90vw;
     height: 90vw;
     position: absolute;
@@ -39,7 +40,7 @@ main {
 
 .board {
     flex: 2;
-    background: #c66c11cb;
+    background: #c66c11cb;;
     box-shadow: 0 0 10px 2px rgb(69, 69, 69);
     width: 68%;
     height: 68%;
@@ -51,6 +52,7 @@ main {
     justify-content: center;
     align-items: center;
     display: flex;
+    /* background-color: white; */
 }
 
 .title-score {
@@ -68,3 +70,18 @@ main {
 .block-container {
     height: 20%;
 }
+
+.button {
+    background-color: #e29d58cb;
+    border-radius: 8px;
+    border: none;
+    padding: 15px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+
+  .button:hover {
+    background-color: #985411cb;
+  }
