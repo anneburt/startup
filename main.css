@@ -40,12 +40,34 @@ main {
 
 .board {
     flex: 2;
-    background: #c66c11cb;;
+    background: black;
     box-shadow: 0 0 10px 2px rgb(69, 69, 69);
     width: 68%;
     height: 68%;
     position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
+
+.square {
+    flex: 0 0 33%;
+    height: 33%;
+    width: 33%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.cell {
+    flex: 0 0 33%;
+    height: 33%;
+    width: 33%;
+    color: black;
+    text-align: center;
+    padding-top: 20px;
+}
+
 
 .game-info {
     height: 12%;
