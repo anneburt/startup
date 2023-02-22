@@ -74,7 +74,6 @@ main {
     justify-content: center;
     align-items: center;
     display: flex;
-    /* background-color: white; */
 }
 
 .title-score {
@@ -90,7 +89,26 @@ main {
 } 
 
 .block-container {
+    flex: 3;
+    width: 100%;
     height: 20%;
+    display: flex;
+    justify-content: space-around; 
+    padding-top: 4%;
+    padding-left: 15%;
+    padding-right: 15%;
+}
+
+.block {
+    /* background-color: black; */
+    flex: 0 0 33%;
+    height: 100%;
+    width: 30%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; 
+    padding-left: 4%;
+    padding-right: 4%;
 }
 
 .button {
