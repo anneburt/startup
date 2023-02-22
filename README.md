@@ -15,6 +15,12 @@ Below are some rough sketches of the application:
 
 The website will be hosted http://blocks260.click
 
+# Deployment Command
+
+```
+./deployFiles.sh -k <pemkey> -h <domain> -s startup
+```
+
 # SSH into server
 
 ```
