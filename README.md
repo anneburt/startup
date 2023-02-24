@@ -4,7 +4,7 @@ This repository is for my CS260 class.
 
 # Blocks!
 
-My startup application, 'Blocks!' can be found at https://startup.blocks260.click. The website is still a work in progress, but contains the initial version of the application using HTML and CSS.
+My startup application, 'Blocks!' can be found at https://startup.blocks260.click. The website is still a work in progress, but contains the initial version of the application. So far, I have been able to create my own structure and styling through HTML and CSS. I plan to add functionality to the game, and pop up windows for each button using Javascript as I become more familiar with the language. 
 
 # Deployment Command
 
