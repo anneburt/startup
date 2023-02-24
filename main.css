@@ -138,4 +138,13 @@ main {
     float: right;
     color: #573008cb;
   }
+
+  @media (max-height: 700px) {
+    footer {
+        display: none;
+    }
+    main {
+        flex: 1 100vh;
+    }
+  }
   
