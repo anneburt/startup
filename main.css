@@ -19,7 +19,6 @@ main {
 }
 
 .game {
-    /* background: white; */
     width: 90vw;
     height: 90vw;
     position: absolute;
@@ -66,6 +65,8 @@ main {
     color: black;
     text-align: center;
     padding-top: 20px;
+    border-style: solid;
+    /* border: 4px; */
 }
 
 
@@ -100,7 +101,6 @@ main {
 }
 
 .block {
-    /* background-color: black; */
     flex: 0 0 33%;
     height: 100%;
     width: 30%;
@@ -125,3 +125,4 @@ main {
   .button:hover {
     background-color: #985411cb;
   }
+  
