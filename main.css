@@ -3,9 +3,9 @@ body {
     flex-direction: column;
     min-width: 375px;
 }
-  
+
 main {
-    flex: 100vh;
+    flex: 97vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -124,5 +124,18 @@ main {
 
   .button:hover {
     background-color: #985411cb;
+  }
+
+  footer {
+    flex: 0 3vh;
+    background: #e29d58cb;
+    color: #573008cb;
+    padding-left: 5px;
+  }
+
+  footer a {
+    padding-right: 5px;
+    float: right;
+    color: #573008cb;
   }
   
