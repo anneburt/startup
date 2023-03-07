@@ -35,3 +35,5 @@ To gain experience using HTML and CSS, I created my own version of the simple me
 With HTML, I used many different elements to outline a basic structure and format for the Simon game including multiple pages with navigation to each, input, buttons, lists, drawing, and more.
 
 With CSS and the Bootstrap CSS framework, I was able to make the structure of my website much more visually appealing and added intuitive user interface elements. Later in the course, I will make this game functional with the use of JavaScript.
+
+With Javascript. the game becomes playable. I created a 'play.js' file that controls all the game interactions and stores the result to be displayed on the scores page. For now, the login functionality stores the login name to use to keep track of scores. 
