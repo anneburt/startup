@@ -189,16 +189,11 @@ footer a {
 }
 
 .block {
-    height: 200px;
-    width: 200px;
+    flex: 0 0 33%;
+    height: 100%;
+    width: 30%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
-    cursor: move;
-    position: absolute;
-}
-
-.left-block {
-    position: absolute;
-    cursor: move;
-}
+    justify-content: space-around; 
+    padding-left: 4%;
+    padding-right: 4%;
