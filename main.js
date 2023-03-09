@@ -14,25 +14,39 @@ function showPopup() {
 window.onload = play();
 
 function play() {
-    generateBlocks();
+    let blocks = generateBlocks();
+    let board = generateBoard();
+
 }
 
 function generateBlocks() {
-    console.log("generate blocks here")
-    for(let i = 0; i < 3; i++) {
-        const b = getRandomBlock();
+    console.log("generating blocks");
+    let blocks = [getRandomBlock(), getRandomBlock(), getRandomBlock()]
+
+    for(let i = 0; i < blocks.length; i++) {
         for(let j = 0; j < 9; j++) {
-            if (b[j] == 1) {
+            if(blocks[i][j] == 1) {
                 document.getElementById("b" + i + "-" + j).className = "cell cell-fill";
             }
         }
     }
+
+    return blocks;
 }
 
 function getRandomBlock() {
     const blocks = [[0, 0, 0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 1, 1, 1, 0, 0, 0], [0, 1, 0, 0, 1, 0, 0, 1, 0]];
     const randomIndex = Math.floor(Math.random() * 3);
     return blocks[randomIndex];
+}
+
+function generateBoard() {
+    console.log("generating board");
+    let board = [];
+    for(let i = 0; i < 81; i++) {
+        board[i] = 0;
+    }
+    return board;
 }
 
 function reset() {
@@ -42,7 +56,6 @@ function reset() {
     }
     play();
 }
-
 
 const squares = document.querySelectorAll('.square');
 
