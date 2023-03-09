@@ -17,8 +17,6 @@ function play() {
     generateBlocks();
 }
 
-
-
 function generateBlocks() {
     console.log("generate blocks here")
     for(let i = 0; i < 3; i++) {
@@ -35,6 +33,14 @@ function getRandomBlock() {
     const blocks = [[0, 0, 0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 1, 1, 1, 0, 0, 0], [0, 1, 0, 0, 1, 0, 0, 1, 0]];
     const randomIndex = Math.floor(Math.random() * 3);
     return blocks[randomIndex];
+}
+
+function reset() {
+    const collection = document.getElementsByClassName("cell cell-fill");
+    while(collection.length > 0) {
+        collection[0].className = "cell cell-empty";
+    }
+    play();
 }
 
 
