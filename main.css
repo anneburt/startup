@@ -63,10 +63,23 @@ main {
     height: 33%;
     width: 33%;
     color: black;
-    text-align: center;
-    padding-top: 20px;
     border-style: solid;
-    /* border: 4px; */
+}
+
+.cell-dark {
+    background: #9f560cc3;
+}
+
+.cell-light {
+    background: #c66c11cb;
+}
+
+.cell-empty {
+    border-style: none;
+}
+
+.cell-fill {
+    background: #e29d58cb;
 }
 
 
