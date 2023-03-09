@@ -58,6 +58,10 @@ main {
     justify-content: space-around;
 }
 
+.drag-over {
+    border: dashed 3px red;
+}
+
 .cell {
     flex: 0 0 33%;
     height: 33%;
@@ -197,3 +201,4 @@ footer a {
     justify-content: space-around; 
     padding-left: 4%;
     padding-right: 4%;
+}
