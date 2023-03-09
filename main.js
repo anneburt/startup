@@ -11,6 +11,33 @@ function showPopup() {
     }
 }
 
+window.onload = play();
+
+function play() {
+    generateBlocks();
+}
+
+
+
+function generateBlocks() {
+    console.log("generate blocks here")
+    for(let i = 0; i < 3; i++) {
+        const b = getRandomBlock();
+        for(let j = 0; j < 9; j++) {
+            if (b[j] == 1) {
+                document.getElementById("b" + i + "-" + j).className = "cell cell-fill";
+            }
+        }
+    }
+}
+
+function getRandomBlock() {
+    const blocks = [[0, 0, 0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 1, 1, 1, 0, 0, 0], [0, 1, 0, 0, 1, 0, 0, 1, 0]];
+    const randomIndex = Math.floor(Math.random() * 3);
+    return blocks[randomIndex];
+}
+
+
 const squares = document.querySelectorAll('.square');
 
 squares.forEach(square => {
