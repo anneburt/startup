@@ -38,12 +38,12 @@ function play() {
         cell.addEventListener('dragenter', dragEnter);
         cell.addEventListener('dragover', dragOver);
         cell.addEventListener('dragleave', dragLeave);
-        cell.addEventListener('dragDrop', dragDrop);
+        cell.addEventListener('drop', dragDrop);
     });
 
     function dragEnter(e) {
         e.preventDefault();
-        const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id));
+        const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id), board);
 
         for(let j = 0; j < targetCells.length; j++) {
             document.getElementById(Number(targetCells[j])).classList.add('drag-over');
@@ -53,7 +53,7 @@ function play() {
 
     function dragOver(e) {
         e.preventDefault();
-        const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id));
+        const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id), board);
 
         for(let j = 0; j < targetCells.length; j++) {
             document.getElementById(Number(targetCells[j])).classList.add('drag-over');
@@ -61,7 +61,7 @@ function play() {
     }
 
     function dragLeave(e) {
-        const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id));
+        const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id), board);
 
         for(let j = 0; j < targetCells.length; j++) {
             document.getElementById(Number(targetCells[j])).classList.remove('drag-over');
@@ -69,16 +69,17 @@ function play() {
     }
 
     function dragDrop(e) {
-        const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id));
+        const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id), board);
 
         for(let j = 0; j < targetCells.length; j++) {
-            document.getElementById(Number(targetCells[j])).classList.remove('drag-over');
+            board[targetCells[j]] = 1;
+            document.getElementById(Number(targetCells[j])).className = "cell cell-fill";
         }
     }
 
 }
 
-function getTargetCells(block, cellId) {
+function getTargetCells(block, cellId, board) {
     let calculateTargetCells = [(x) => x - 10,
         (x) => x - 9,
         (x) => x - 8,
@@ -99,6 +100,11 @@ function getTargetCells(block, cellId) {
                 // out of game board range
 
                 //TODO: consider out of row range
+                return;
+            }
+
+            if(board[targetCell] == 1) {
+                // board already filled
                 return;
             }
 
