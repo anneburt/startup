@@ -13,9 +13,8 @@ function showPopup() {
 
 window.onload = play();
 
-function play() {
+function play(board=generateBoard()) {
     const blocks = generateBlocks();
-    const board = generateBoard();
 
     // create map from block name to array representation
     const blockNameToObject = new Map();
@@ -33,6 +32,8 @@ function play() {
     document.getElementById("left-block").addEventListener('dragstart', dragStart);
     document.getElementById("center-block").addEventListener('dragstart', dragStart);
     document.getElementById("right-block").addEventListener('dragstart', dragStart);
+
+    let blocksPlaced = 0;
 
     // store current block
     function dragStart(e) {
@@ -78,15 +79,38 @@ function play() {
         currentBlockObject = blockNameToObject.get(currentBlock)
         const targetCells = getTargetCells(currentBlockObject, Number(e.target.id), board);
 
+        // update board with new block
         for(let i = 0; i < targetCells.length; i++) {
             board[targetCells[i]] = 1;
+
+            document.getElementById(targetCells[i]).removeEventListener('dragstart', dragStart);
+            document.getElementById(targetCells[i]).removeEventListener('dragover', dragOver);
+            document.getElementById(targetCells[i]).removeEventListener('dragleave', dragLeave);
+            document.getElementById(targetCells[i]).removeEventListener('drop', dragDrop);
+
             document.getElementById(Number(targetCells[i])).className = "cell cell-fill";
         }
 
+        // remove block from view from block container
         for(let j = 0; j < 9; j++) {
             if(currentBlockObject[j] == 1) {
                 document.getElementById("b" + blockNameToIndex.get(currentBlock) + "-" + j).className = "cell cell-empty";
             }
+        }
+
+        // check if all current blocks have been placed
+        blocksPlaced++;
+        if(blocksPlaced > 2) {
+            // remove event listeners
+            let cells = document.querySelectorAll(".cell.cell-light, .cell.cell-dark");
+            cells.forEach(cell => {
+                cell.removeEventListener('dragenter', dragEnter);
+                cell.removeEventListener('dragover', dragOver);
+                cell.removeEventListener('dragleave', dragLeave);
+                cell.removeEventListener('drop', dragDrop);
+            });
+
+            play(board);
         }
     }
 }
