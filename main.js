@@ -16,12 +16,6 @@ window.onload = play();
 function play(board=generateBoard()) {
     const blocks = generateBlocks();
 
-    // create map from block name to array representation
-    const blockNameToObject = new Map();
-    blockNameToObject.set("left-block", blocks[0]);
-    blockNameToObject.set("center-block", blocks[1]);
-    blockNameToObject.set("right-block", blocks[2]);
-
     // create map from block name to index
     const blockNameToIndex = new Map();
     blockNameToIndex.set("left-block", 0);
@@ -50,7 +44,7 @@ function play(board=generateBoard()) {
 
     function dragEnter(e) {
         e.preventDefault();
-        const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id), board);
+        const targetCells = getTargetCells(blocks[blockNameToIndex.get(currentBlock)], Number(e.target.id), board);
 
         for(let i = 0; i < targetCells.length; i++) {
             document.getElementById(Number(targetCells[i])).classList.add('drag-over');
@@ -60,7 +54,7 @@ function play(board=generateBoard()) {
 
     function dragOver(e) {
         e.preventDefault();
-        const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id), board);
+        const targetCells = getTargetCells(blocks[blockNameToIndex.get(currentBlock)], Number(e.target.id), board);
 
         for(let i = 0; i < targetCells.length; i++) {
             document.getElementById(Number(targetCells[i])).classList.add('drag-over');
@@ -68,7 +62,7 @@ function play(board=generateBoard()) {
     }
 
     function dragLeave(e) {
-        const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id), board);
+        const targetCells = getTargetCells(blocks[blockNameToIndex.get(currentBlock)], Number(e.target.id), board);
 
         for(let i = 0; i < targetCells.length; i++) {
             document.getElementById(Number(targetCells[i])).classList.remove('drag-over');
@@ -76,7 +70,7 @@ function play(board=generateBoard()) {
     }
 
     function dragDrop(e) {
-        currentBlockObject = blockNameToObject.get(currentBlock)
+        currentBlockObject = blocks[blockNameToIndex.get(currentBlock)]
         const targetCells = getTargetCells(currentBlockObject, Number(e.target.id), board);
 
         // update board with new block
