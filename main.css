@@ -59,7 +59,8 @@ main {
 }
 
 .drag-over {
-    border: dashed 3px red;
+    border: dashed 3px #e29d58cb;
+    opacity: 0.8;
 }
 
 .cell {

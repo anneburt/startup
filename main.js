@@ -14,11 +14,11 @@ function showPopup() {
 window.onload = play();
 
 function play() {
-    let blocks = generateBlocks();
-    let board = generateBoard();
+    const blocks = generateBlocks();
+    const board = generateBoard();
 
     // create map from block name to array representation
-    let blockNameToObject = new Map();
+    const blockNameToObject = new Map();
     blockNameToObject.set("left-block", blocks[0]);
     blockNameToObject.set("center-block", blocks[1]);
     blockNameToObject.set("right-block", blocks[2]);
@@ -36,23 +36,82 @@ function play() {
     let cells = document.querySelectorAll(".cell.cell-light, .cell.cell-dark");
     cells.forEach(cell => {
         cell.addEventListener('dragenter', dragEnter);
+        cell.addEventListener('dragover', dragOver);
         cell.addEventListener('dragleave', dragLeave);
+        cell.addEventListener('dragDrop', dragDrop);
     });
 
     function dragEnter(e) {
-        e.target.classList.add('drag-over');
-        console.log("current block: ", blockNameToObject.get(currentBlock));
+        e.preventDefault();
+        const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id));
+
+        for(let j = 0; j < targetCells.length; j++) {
+            document.getElementById(Number(targetCells[j])).classList.add('drag-over');
+        }
+    }
+
+
+    function dragOver(e) {
+        e.preventDefault();
+        const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id));
+
+        for(let j = 0; j < targetCells.length; j++) {
+            document.getElementById(Number(targetCells[j])).classList.add('drag-over');
+        }
     }
 
     function dragLeave(e) {
-        e.target.classList.remove('drag-over');
+        const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id));
+
+        for(let j = 0; j < targetCells.length; j++) {
+            document.getElementById(Number(targetCells[j])).classList.remove('drag-over');
+        }
+    }
+
+    function dragDrop(e) {
+        const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id));
+
+        for(let j = 0; j < targetCells.length; j++) {
+            document.getElementById(Number(targetCells[j])).classList.remove('drag-over');
+        }
     }
 
 }
 
+function getTargetCells(block, cellId) {
+    let calculateTargetCells = [(x) => x - 10,
+        (x) => x - 9,
+        (x) => x - 8,
+        (x) => x - 1,
+        (x) => x,
+        (x) => x + 1,
+        (x) => x + 8,
+        (x) => x + 9,
+        (x) => x + 10]
+
+    let targetCells = []
+    for(let i = 0; i < block.length; i++) {
+        if(block[i] == 1) {
+            const targetCell = calculateTargetCells[i](cellId);
+            console.log("target cell:", targetCell);
+
+            if(targetCell < 0 || targetCell > 80) {
+                // out of game board range
+
+                //TODO: consider out of row range
+                return;
+            }
+
+            console.log("appending target cell");
+            targetCells.push(targetCell);
+        }
+    }
+    return targetCells;
+}
+
 function generateBlocks() {
     console.log("generating blocks");
-    let blocks = [getRandomBlock(), getRandomBlock(), getRandomBlock()]
+    const blocks = [getRandomBlock(), getRandomBlock(), getRandomBlock()]
 
     for(let i = 0; i < blocks.length; i++) {
         for(let j = 0; j < 9; j++) {
@@ -82,6 +141,7 @@ function generateBoard() {
 }
 
 function reset() {
+    //TODO: proper reset (remove listeners)
     const collection = document.getElementsByClassName("cell cell-fill");
     while(collection.length > 0) {
         collection[0].className = "cell cell-empty";
