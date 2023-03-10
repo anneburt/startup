@@ -111,6 +111,8 @@ function createBlockBoardInteraction(blocks, board, blockNameToIndex) {
         // remove block from view from block container
         changeCellClass(currentBlockObject, blockNameToIndex.get(currentBlock), "cell cell-empty");
 
+        updateScore(currentBlockObject);
+
         // check if all current blocks have been placed
         blocksPlaced++;
         if(blocksPlaced > 2) {
@@ -172,6 +174,16 @@ function removeDragOverClassFromTargetCells(targetCells) {
     for(let i = 0; i < targetCells.length; i++) {
         document.getElementById(Number(targetCells[i])).classList.remove('drag-over');
     }
+}
+
+function updateScore(block) {
+    let score = Number(document.getElementById("score").textContent);
+    for(let i = 0; i < block.length; i++) {
+        if(block[i] == 1) {
+            score += 1;
+        }
+    }
+    document.getElementById("score").textContent = score;
 }
 
 function reset() {
