@@ -17,6 +17,37 @@ function play() {
     let blocks = generateBlocks();
     let board = generateBoard();
 
+    // create map from block name to array representation
+    let blockNameToObject = new Map();
+    blockNameToObject.set("left-block", blocks[0]);
+    blockNameToObject.set("center-block", blocks[1]);
+    blockNameToObject.set("right-block", blocks[2]);
+
+    // add event listener to each block when picked up
+    document.getElementById("left-block").addEventListener('dragstart', dragStart);
+    document.getElementById("center-block").addEventListener('dragstart', dragStart);
+    document.getElementById("right-block").addEventListener('dragstart', dragStart);
+
+    // store current block
+    function dragStart(e) {
+        currentBlock = e.target.id;
+    }
+
+    let cells = document.querySelectorAll(".cell.cell-light, .cell.cell-dark");
+    cells.forEach(cell => {
+        cell.addEventListener('dragenter', dragEnter);
+        cell.addEventListener('dragleave', dragLeave);
+    });
+
+    function dragEnter(e) {
+        e.target.classList.add('drag-over');
+        console.log("current block: ", blockNameToObject.get(currentBlock));
+    }
+
+    function dragLeave(e) {
+        e.target.classList.remove('drag-over');
+    }
+
 }
 
 function generateBlocks() {
@@ -35,6 +66,7 @@ function generateBlocks() {
 }
 
 function getRandomBlock() {
+    //TODO: add more block variations
     const blocks = [[0, 0, 0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 1, 1, 1, 0, 0, 0], [0, 1, 0, 0, 1, 0, 0, 1, 0]];
     const randomIndex = Math.floor(Math.random() * 3);
     return blocks[randomIndex];
@@ -56,33 +88,3 @@ function reset() {
     }
     play();
 }
-
-const squares = document.querySelectorAll('.square');
-
-squares.forEach(square => {
-    square.addEventListener('dragenter', dragEnter)
-    square.addEventListener('dragover', dragOver);
-    square.addEventListener('dragleave', dragLeave);
-    square.addEventListener('drop', drop);
-});
-
-function dragEnter(e) {
-    e.target.classList.add('drag-over');
-    console.log('drag enter');
-}
-
-function dragOver(e) {
-    e.target.classList.add('drag-over');
-    console.log('drag over');
-}
-
-function dragLeave(e) {
-    e.target.classList.remove('drag-over');
-    console.log('drag leave');
-}
-
-function drop(e) {
-    e.target.classList.remove('drag-over');
-    console.log('drag drop');
-}
-
