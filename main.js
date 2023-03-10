@@ -23,6 +23,12 @@ function play() {
     blockNameToObject.set("center-block", blocks[1]);
     blockNameToObject.set("right-block", blocks[2]);
 
+    // create map from block name to index
+    const blockNameToIndex = new Map();
+    blockNameToIndex.set("left-block", 0);
+    blockNameToIndex.set("center-block", 1);
+    blockNameToIndex.set("right-block", 2);
+
     // add event listener to each block when picked up
     document.getElementById("left-block").addEventListener('dragstart', dragStart);
     document.getElementById("center-block").addEventListener('dragstart', dragStart);
@@ -45,8 +51,8 @@ function play() {
         e.preventDefault();
         const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id), board);
 
-        for(let j = 0; j < targetCells.length; j++) {
-            document.getElementById(Number(targetCells[j])).classList.add('drag-over');
+        for(let i = 0; i < targetCells.length; i++) {
+            document.getElementById(Number(targetCells[i])).classList.add('drag-over');
         }
     }
 
@@ -55,28 +61,34 @@ function play() {
         e.preventDefault();
         const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id), board);
 
-        for(let j = 0; j < targetCells.length; j++) {
-            document.getElementById(Number(targetCells[j])).classList.add('drag-over');
+        for(let i = 0; i < targetCells.length; i++) {
+            document.getElementById(Number(targetCells[i])).classList.add('drag-over');
         }
     }
 
     function dragLeave(e) {
         const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id), board);
 
-        for(let j = 0; j < targetCells.length; j++) {
-            document.getElementById(Number(targetCells[j])).classList.remove('drag-over');
+        for(let i = 0; i < targetCells.length; i++) {
+            document.getElementById(Number(targetCells[i])).classList.remove('drag-over');
         }
     }
 
     function dragDrop(e) {
-        const targetCells = getTargetCells(blockNameToObject.get(currentBlock), Number(e.target.id), board);
+        currentBlockObject = blockNameToObject.get(currentBlock)
+        const targetCells = getTargetCells(currentBlockObject, Number(e.target.id), board);
 
-        for(let j = 0; j < targetCells.length; j++) {
-            board[targetCells[j]] = 1;
-            document.getElementById(Number(targetCells[j])).className = "cell cell-fill";
+        for(let i = 0; i < targetCells.length; i++) {
+            board[targetCells[i]] = 1;
+            document.getElementById(Number(targetCells[i])).className = "cell cell-fill";
+        }
+
+        for(let j = 0; j < 9; j++) {
+            if(currentBlockObject[j] == 1) {
+                document.getElementById("b" + blockNameToIndex.get(currentBlock) + "-" + j).className = "cell cell-empty";
+            }
         }
     }
-
 }
 
 function getTargetCells(block, cellId, board) {
