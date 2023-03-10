@@ -1,31 +1,61 @@
-function showPopup() {
-    var tutorial = document.getElementById("tutorial");
-    var game = document.getElementById("game");
-
-    if (tutorial.style.display == "none") {
-        tutorial.style.display = "flex";
-        game.style.display = "none";
-    } else {
-        tutorial.style.display = "none";
-        game.style.display = "flex";
-    }
-}
-
+const blockNames = ["left-block", "center-block", "right-block"];
 window.onload = play();
 
 function play(board=generateBoard()) {
     const blocks = generateBlocks();
+    const blockNameToIndex = createBlockNameToIndexMap();
 
-    // create map from block name to index
+    createBlockBoardInteraction(blocks, board, blockNameToIndex);
+}
+
+function generateBoard() {
+    console.log("generating board");
+    let board = [];
+    for(let i = 0; i < 81; i++) {
+        board[i] = 0;
+    }
+    return board;
+}
+
+function generateBlocks() {
+    console.log("generating blocks");
+    const blocks = [getRandomBlock(), getRandomBlock(), getRandomBlock()]
+
+    for(let i = 0; i < blocks.length; i++) {
+        changeCellClass(blocks[i], i, "cell cell-fill");
+    }
+
+    return blocks;
+}
+
+function getRandomBlock() {
+    //TODO: add more block variations
+    const blocks = [[0, 0, 0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 1, 1, 1, 0, 0, 0], [0, 1, 0, 0, 1, 0, 0, 1, 0]];
+    const randomIndex = Math.floor(Math.random() * 3);
+    return blocks[randomIndex];
+}
+
+function changeCellClass(block, blockIndex, newCellClass) {
+    for(let i = 0; i < 9; i++) {
+        if(block[i] == 1) {
+            document.getElementById("b" + blockIndex + "-" + i).className = newCellClass;
+        }
+    }
+}
+
+function createBlockNameToIndexMap() {
     const blockNameToIndex = new Map();
-    blockNameToIndex.set("left-block", 0);
-    blockNameToIndex.set("center-block", 1);
-    blockNameToIndex.set("right-block", 2);
+    for(let i = 0; i < blockNames.length; i++) {
+        blockNameToIndex.set(blockNames[i], i);
+    }
+    return blockNameToIndex;
+}
 
-    // add event listener to each block when picked up
-    document.getElementById("left-block").addEventListener('dragstart', dragStart);
-    document.getElementById("center-block").addEventListener('dragstart', dragStart);
-    document.getElementById("right-block").addEventListener('dragstart', dragStart);
+function createBlockBoardInteraction(blocks, board, blockNameToIndex) {
+    // add drag event listeners to each block
+    for(let i = 0; i < blockNames.length; i++) {
+        document.getElementById(blockNames[i]).addEventListener('dragstart', dragStart);
+    }
 
     let blocksPlaced = 0;
 
@@ -34,6 +64,7 @@ function play(board=generateBoard()) {
         currentBlock = e.target.id;
     }
 
+    // add event listeners to each block
     let cells = document.querySelectorAll(".cell.cell-light, .cell.cell-dark");
     cells.forEach(cell => {
         cell.addEventListener('dragenter', dragEnter);
@@ -44,29 +75,21 @@ function play(board=generateBoard()) {
 
     function dragEnter(e) {
         e.preventDefault();
+
         const targetCells = getTargetCells(blocks[blockNameToIndex.get(currentBlock)], Number(e.target.id), board);
-
-        for(let i = 0; i < targetCells.length; i++) {
-            document.getElementById(Number(targetCells[i])).classList.add('drag-over');
-        }
+        addDragOverClassToTargetCells(targetCells);
     }
-
 
     function dragOver(e) {
         e.preventDefault();
-        const targetCells = getTargetCells(blocks[blockNameToIndex.get(currentBlock)], Number(e.target.id), board);
 
-        for(let i = 0; i < targetCells.length; i++) {
-            document.getElementById(Number(targetCells[i])).classList.add('drag-over');
-        }
+        const targetCells = getTargetCells(blocks[blockNameToIndex.get(currentBlock)], Number(e.target.id), board);
+        addDragOverClassToTargetCells(targetCells);
     }
 
     function dragLeave(e) {
         const targetCells = getTargetCells(blocks[blockNameToIndex.get(currentBlock)], Number(e.target.id), board);
-
-        for(let i = 0; i < targetCells.length; i++) {
-            document.getElementById(Number(targetCells[i])).classList.remove('drag-over');
-        }
+        removeDragOverClassFromTargetCells(targetCells);
     }
 
     function dragDrop(e) {
@@ -86,11 +109,7 @@ function play(board=generateBoard()) {
         }
 
         // remove block from view from block container
-        for(let j = 0; j < 9; j++) {
-            if(currentBlockObject[j] == 1) {
-                document.getElementById("b" + blockNameToIndex.get(currentBlock) + "-" + j).className = "cell cell-empty";
-            }
-        }
+        changeCellClass(currentBlockObject, blockNameToIndex.get(currentBlock), "cell cell-empty");
 
         // check if all current blocks have been placed
         blocksPlaced++;
@@ -124,7 +143,6 @@ function getTargetCells(block, cellId, board) {
     for(let i = 0; i < block.length; i++) {
         if(block[i] == 1) {
             const targetCell = calculateTargetCells[i](cellId);
-            console.log("target cell:", targetCell);
 
             if(targetCell < 0 || targetCell > 80) {
                 // out of game board range
@@ -138,42 +156,22 @@ function getTargetCells(block, cellId, board) {
                 return;
             }
 
-            console.log("appending target cell");
             targetCells.push(targetCell);
         }
     }
     return targetCells;
 }
 
-function generateBlocks() {
-    console.log("generating blocks");
-    const blocks = [getRandomBlock(), getRandomBlock(), getRandomBlock()]
-
-    for(let i = 0; i < blocks.length; i++) {
-        for(let j = 0; j < 9; j++) {
-            if(blocks[i][j] == 1) {
-                document.getElementById("b" + i + "-" + j).className = "cell cell-fill";
-            }
-        }
+function addDragOverClassToTargetCells(targetCells) {
+    for(let i = 0; i < targetCells.length; i++) {
+        document.getElementById(Number(targetCells[i])).classList.add('drag-over');
     }
-
-    return blocks;
 }
 
-function getRandomBlock() {
-    //TODO: add more block variations
-    const blocks = [[0, 0, 0, 0, 1, 0, 0, 0, 0], [0, 0, 0, 1, 1, 1, 0, 0, 0], [0, 1, 0, 0, 1, 0, 0, 1, 0]];
-    const randomIndex = Math.floor(Math.random() * 3);
-    return blocks[randomIndex];
-}
-
-function generateBoard() {
-    console.log("generating board");
-    let board = [];
-    for(let i = 0; i < 81; i++) {
-        board[i] = 0;
+function removeDragOverClassFromTargetCells(targetCells) {
+    for(let i = 0; i < targetCells.length; i++) {
+        document.getElementById(Number(targetCells[i])).classList.remove('drag-over');
     }
-    return board;
 }
 
 function reset() {
@@ -183,4 +181,17 @@ function reset() {
         collection[0].className = "cell cell-empty";
     }
     play();
+}
+
+function showPopup() {
+    var tutorial = document.getElementById("tutorial");
+    var game = document.getElementById("game");
+
+    if (tutorial.style.display == "none") {
+        tutorial.style.display = "flex";
+        game.style.display = "none";
+    } else {
+        tutorial.style.display = "none";
+        game.style.display = "flex";
+    }
 }
