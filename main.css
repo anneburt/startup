@@ -202,6 +202,7 @@ footer a {
     justify-content: space-around; 
     padding-left: 4%;
     padding-right: 4%;
+    transform: translate(0,0);
 }
 
 #reset-button {
