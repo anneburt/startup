@@ -25,7 +25,6 @@ function play(board=generateBoard(), blocks=generateBlocks(), blocksLeft=blockNa
     });
 
     function dragOver(e) {
-        console.log("current block:", currentBlock);
         e.preventDefault();
 
         const targetCells = getTargetCells(blocks[blockNameToIndex.get(currentBlock)], Number(e.target.id), board);
@@ -33,13 +32,11 @@ function play(board=generateBoard(), blocks=generateBlocks(), blocksLeft=blockNa
     }
 
     function dragLeave(e) {
-        console.log("current block:", currentBlock);
         const targetCells = getTargetCells(blocks[blockNameToIndex.get(currentBlock)], Number(e.target.id), board);
         removeDragOverClassFromTargetCells(targetCells);
     }
 
     function dragDrop(e) {
-        console.log("current block:", currentBlock);
         currentBlockObject = blocks[blockNameToIndex.get(currentBlock)]
         const targetCells = getTargetCells(currentBlockObject, Number(e.target.id), board);
 
@@ -47,7 +44,6 @@ function play(board=generateBoard(), blocks=generateBlocks(), blocksLeft=blockNa
         for(let i = 0; i < targetCells.length; i++) {
             board[targetCells[i]] = 1;
 
-            // document.getElementById(targetCells[i]).removeEventListener('dragstart', dragStart);
             document.getElementById(targetCells[i]).removeEventListener('dragover', dragOver);
             document.getElementById(targetCells[i]).removeEventListener('dragleave', dragLeave);
             document.getElementById(targetCells[i]).removeEventListener('drop', dragDrop);
@@ -65,7 +61,6 @@ function play(board=generateBoard(), blocks=generateBlocks(), blocksLeft=blockNa
         if(checkClears(board) && blocksLeft.length > 0) {
             let cells = document.querySelectorAll(".cell.cell-light, .cell.cell-dark");
             cells.forEach(cell => {
-                // cell.removeEventListener('dragenter', dragEnter);
                 cell.removeEventListener('dragover', dragOver);
                 cell.removeEventListener('dragleave', dragLeave);
                 cell.removeEventListener('drop', dragDrop);
@@ -190,17 +185,20 @@ function updateScore(block) {
 }
 
 function checkClears(board) {
-    let cleared = false;
-    if(checkRowClears(board)) {
-        cleared = true;
-    }
+    let clearCells = new Set();
+    let rowCleared = checkRowClears(board, clearCells);
+    let columnCleared = checkColumnClears(board, clearCells);
 
-    //TODO: checkColumnClears();
+    // clear target cells on board
+    clearCells.forEach((value) => {
+        board[value] = 0;
+    });
+
+    return rowCleared || columnCleared;
     //TODO: checkSquareClears();
-    return cleared;
 }
 
-function checkRowClears(board) {
+function checkRowClears(board, clearCells) {
     cleared = false;
     for(let row = 0; row < 9; row++) {
         let needsClear = true
@@ -211,17 +209,50 @@ function checkRowClears(board) {
         }
 
         if(needsClear) {
-            clearRow(row, board);
+            clearRow(row, clearCells);
             cleared = true;
         }
     }
     return cleared;
 }
 
-function clearRow(rowIndex, board) {
+function checkColumnClears(board, clearCells) {
+    cleared = false;
+    for(let column = 0; column < 9; column++) {
+        let needsClear = true;
+        for(let row = 0; row < 9; row++) {
+            if(board[column + (9 * row)] == 0) {
+                needsClear = false;
+            }
+        }
+
+        if(needsClear) {
+            clearColumn(column, clearCells);
+            cleared = true;
+        }
+    }
+    return cleared;
+}
+
+function clearRow(rowIndex, clearCells) {
     for(let i = 0; i < 9; i++) {
-        let targetCell = i +(9 * rowIndex);
-        board[targetCell] = 0;
+        let targetCell = i + (9 * rowIndex);
+        clearCells.add(targetCell);
+        //board[targetCell] = 0;
+
+        if(lightCells.includes(targetCell)) {
+            document.getElementById(targetCell).className = "cell cell-light";
+        } else {
+            document.getElementById(targetCell).className = "cell cell-dark";
+        }
+    }
+}
+
+function clearColumn(columnIndex, clearCells) {
+    for(let i = 0; i < 9; i++) {
+        let targetCell = columnIndex + (9 * i);
+        clearCells.add(targetCell);
+        // board[targetCell] = 0;
 
         if(lightCells.includes(targetCell)) {
             document.getElementById(targetCell).className = "cell cell-light";
