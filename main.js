@@ -155,6 +155,20 @@ function getTargetCells(block, cellId, board) {
                 return;
             }
 
+            if(i == 2 || i == 5 || i == 8) {
+                if(targetCell % 9 == 0) {
+                    // out of row range
+                    return;
+                }
+            }
+
+            if(i == 0 || i == 3 || i == 6) {
+                if(targetCell % 9 == 8) {
+                    //out of row range
+                    return
+                }
+            }
+
             if(board[targetCell] == 1) {
                 // board already filled
                 return;
