@@ -1,6 +1,10 @@
 const blockNames = ["left-block", "center-block", "right-block"];
+//TODO: generate these numbers more eloquently
 const lightCells = [3,4,5,12,13,14,21,22,23,27,28,29,33,34,35,36,37,38,42,
-    43,44,45,46,47,51,52,53,57,58,59,66,67,68,75,76,77]
+    43,44,45,46,47,51,52,53,57,58,59,66,67,68,75,76,77];
+const squares = [[0,1,2,9,10,11,18,19,20],[3,4,5,12,13,14,21,22,23],[6,7,8,15,16,17,24,25,26],
+                 [27,28,29,36,37,38,45,46,47],[30,31,32,39,40,41,48,49,50],[33,34,35,42,43,44,51,52,53],
+                 [54,55,56,63,64,65,72,73,74],[57,58,59,66,67,68,75,76,77],[60,61,62,69,70,71,78,79,80]];
 const blockNameToIndex = createBlockNameToIndexMap();
 window.onload = play();
 
@@ -186,16 +190,17 @@ function updateScore(block) {
 
 function checkClears(board) {
     let clearCells = new Set();
+    //TODO: remove code duplication in these functions
     let rowCleared = checkRowClears(board, clearCells);
     let columnCleared = checkColumnClears(board, clearCells);
+    let squareCleared = checkSquareClears(board, clearCells);
 
     // clear target cells on board
     clearCells.forEach((value) => {
         board[value] = 0;
     });
 
-    return rowCleared || columnCleared;
-    //TODO: checkSquareClears();
+    return rowCleared || columnCleared || squareCleared;
 }
 
 function checkRowClears(board, clearCells) {
@@ -234,11 +239,28 @@ function checkColumnClears(board, clearCells) {
     return cleared;
 }
 
+function checkSquareClears(board, clearCells) {
+    cleared = false;
+    for(let square = 0; square < 9; square++) {
+        let needsClear = true;
+        for(let i = 0; i < 9; i++) {
+            if(board[squares[square][i]] == 0) {
+                needsClear = false;
+            }
+        }
+
+        if(needsClear) {
+            clearSquare(square, clearCells);
+            cleared = true;
+        }
+    }
+    return cleared;
+}
+
 function clearRow(rowIndex, clearCells) {
     for(let i = 0; i < 9; i++) {
         let targetCell = i + (9 * rowIndex);
         clearCells.add(targetCell);
-        //board[targetCell] = 0;
 
         if(lightCells.includes(targetCell)) {
             document.getElementById(targetCell).className = "cell cell-light";
@@ -252,7 +274,19 @@ function clearColumn(columnIndex, clearCells) {
     for(let i = 0; i < 9; i++) {
         let targetCell = columnIndex + (9 * i);
         clearCells.add(targetCell);
-        // board[targetCell] = 0;
+
+        if(lightCells.includes(targetCell)) {
+            document.getElementById(targetCell).className = "cell cell-light";
+        } else {
+            document.getElementById(targetCell).className = "cell cell-dark";
+        }
+    }
+}
+
+function clearSquare(squareIndex, clearCells) {
+    for(let i = 0; i < 9; i++) {
+        let targetCell = squares[squareIndex][i];
+        clearCells.add(targetCell);
 
         if(lightCells.includes(targetCell)) {
             document.getElementById(targetCell).className = "cell cell-light";
