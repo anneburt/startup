@@ -305,7 +305,7 @@ function reset() {
     play();
 }
 
-function showPopup() {
+function showTutorial() {
     var tutorial = document.getElementById("tutorial");
     var game = document.getElementById("game");
 
@@ -314,6 +314,19 @@ function showPopup() {
         game.style.display = "none";
     } else {
         tutorial.style.display = "none";
+        game.style.display = "flex";
+    }
+}
+
+function showLogin() {
+    var login = document.getElementById("login");
+    var game = document.getElementById("game");
+
+    if (login.style.display == "none") {
+        login.style.display = "flex";
+        game.style.display = "none";
+    } else {
+        login.style.display = "none";
         game.style.display = "flex";
     }
 }
